@@ -1,0 +1,113 @@
+<div class="row">
+    <div class="col-md-8 col-md-offset-2">
+        <div class="panel panel-primary">
+            <div class="panel-heading text-center">
+                <h3 class="panel-title">Parámetros de Búsqueda</h3>
+            </div>
+            <form (ngSubmit)="buscar()" #heroForm="ngForm">
+                <div class="panel-body">
+                    <div class="form-group col-md-6">
+                        <label>Documento :</label>
+                        <input type="number" name="documento" placeholder="buscar por documento..." class="form-control" [(ngModel)]="empleado.nroDocumento" />
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label>Seleccionar rango de salario :</label>
+                        <select class="form-control" name="rango" [(ngModel)]="filtroRangoSalario">
+                            <option [ngValue] ="undefined">Igual que</option>
+                            <option [ngValue] ="1">Mayor que</option>
+                            <option [ngValue] ="2">Menor que</option>
+                        </select>
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label>Salario :</label>
+                        <input type="number" name="salario" placeholder="buscar por rango salarial..." class="form-control" [(ngModel)]="empleado.salario" />
+                    </div>
+                </div>
+                <div class="panel-footer text-center">
+                    <button type="submit" name="bt_menu_search" id="bt_menu_search" class="btn btn-primary">Buscar</button>
+
+                    <!-- Se llama al componente que el cual contiene el formulario para guardar al nuevo empleado. Se utiliza un atributo que contiene el objeto del empleado que se va a editar, pero en este caso se deja vacío -->
+                    <button type="button" name="bt_menu_new" id="bt_menu_new" class="btn" (click)="empleadosService.actualizarEmpleado=empleado" [routerLink]="['/empleados/crear-empleado']">Crear</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Se lista los empleados utilizando la tabla de angular material -->
+<div [hidden]="isLoading">
+    <div class="mat-elevation-z8">
+        <table mat-table [dataSource]="dataSource" matSort>
+
+            <ng-container matColumnDef="nombre">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Nombre </th>
+                <td mat-cell *matCellDef="let empleado"> {{empleado.nombre}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="apellido">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Apellidos </th>
+                <td mat-cell *matCellDef="let empleado"> {{empleado.apellidos}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="nroDocumento">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Nro Documento </th>
+                <td mat-cell *matCellDef="let empleado"> {{empleado.nroDocumento}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="correo">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Correo Electrónico </th>
+                <td mat-cell *matCellDef="let empleado"> {{empleado.correo}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="telefono">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Teléfono </th>
+                <td mat-cell *matCellDef="let empleado"> {{empleado.telefono}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="salario">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Salario </th>
+                <td mat-cell *matCellDef="let empleado"> {{empleado.salario | currency:''}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="departamento">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Departamento </th>
+                <td mat-cell *matCellDef="let empleado">
+                    <div *ngFor="let departamento of departamentos">
+                        <span *ngIf="departamento.id === empleado.idDepartamento">{{departamento.nombre}}</span>
+                    </div>
+                </td>
+            </ng-container>
+
+            <!-- Aquí se muestra el estado del empleado al cual se puede activar o inactivar -->
+            <ng-container matColumnDef="estado">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Estado </th>
+                <td mat-cell *matCellDef="let empleado">
+                    <button type="button" mat-button (click)="cambiarEstado(empleado)">
+                        <mat-icon *ngIf="empleado.activo" style="color: #28a745!important;">check_circle</mat-icon>
+                        <mat-icon  *ngIf="!empleado.activo" style="color: #dc3545!important;">block</mat-icon>
+                    </button>
+                </td>
+            </ng-container>
+
+            <!-- Aquí está el boton que se utiliza para llamar al formulario con el fin editar la infomación del empleado, utilizando como recurso los mismos datos de la tabla evitando de esta manera ir sin necesidad al servidor -->
+            <ng-container matColumnDef="editar">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Editar </th>
+                <td mat-cell *matCellDef="let empleado">
+                    <!-- Se utiliza el objeto empleado para almacenar de manera temporal los datos del empleado, guardandolo en el atributo del servicio -->
+                    <button type="button" mat-button (click)="empleadosService.actualizarEmpleado=empleado" [routerLink]="['/empleados/crear-empleado']"><mat-icon>edit</mat-icon></button>
+                </td>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+        </table>
+
+        <!-- El paginador de la tabla -->
+        <mat-paginator [pageSizeOptions]="[5, 10, 20]" [pageSize]="5" [length]="100"></mat-paginator>
+    </div>
+</div>
+
+<!-- Si no encuentra resultado de la lista de empleados, se muestra este mensaje -->
+<div *ngIf="empleadosBuscados?.length == 0">
+    <p class="text-danger text-center">No se encontraron registros con los parametros de búsqueda</p>
+</div>

@@ -1,0 +1,45 @@
+/* You can add global styles to this file, and also import other style files */
+
+.main-header {
+    background-color: #3d1457 !important;
+}
+
+html,
+body {
+    height: 100%;
+}
+
+body {
+    margin: 0;
+    font-family: Roboto, "Helvetica Neue", sans-serif;
+}
+
+.anml-data>.label {
+    color: #000 !important;
+}
+
+.button-clean {
+    position: absolute;
+    top: 28px;
+    right: 20px;
+    background: transparent;
+    border: 0;
+    padding: 0;
+}
+
+.button-clean>.material-icons {
+    font-size: 14px;
+    margin-top: 7px
+}
+
+table {
+    width: 100%;
+}
+
+th.mat-sort-header-sorted {
+    color: black;
+}
+
+.example-form-field {
+    width: 200px;
+}
