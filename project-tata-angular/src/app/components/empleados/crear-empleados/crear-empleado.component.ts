@@ -137,24 +137,37 @@ export class CrearEmpleadoComponent implements OnInit {
     if(this.empleado.activo === undefined){
       this.empleado.activo = 1;
     }
-    
-    /* Se llama al servicio que guarda y actualiza los datos del empleado */
-    this.empleadosService.guardarEmpleado(this.empleado, this.idEmpleado).subscribe(response =>{
-      this.router.navigate(['/empleados']);
-      this.empleadosService.buscarEmpleados = true;
-      swal.fire({
-        position: 'top-end',
-        icon: 'success',
-        title: `Se ha guardado con éxito el empleado ${this.empleado.nombre}`,
-        showConfirmButton: false,
-        timer: 3000
-      })
-    })
 
-    /* Si el departamento tiene  funciones, se llama al servicio que guarda dichas funciones */
-    if(funcionesDespartamento !== undefined){
-      this.departamentosServices.guardarFuncionesDepartamento(funcionesDespartamento).subscribe(response =>{});
-    }
+    swal.fire({
+      title: '¿Está seguro de guardar los datos del empleado?',
+      icon: 'warning',
+      showCancelButton: true,
+      cancelButtonText: 'No',
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Si'
+    }).then((result) => {
+      if (result.value) {
+    
+        /* Se llama al servicio que guarda y actualiza los datos del empleado */
+        this.empleadosService.guardarEmpleado(this.empleado, this.idEmpleado).subscribe(response =>{
+          this.router.navigate(['/empleados']);
+          this.empleadosService.buscarEmpleados = true;
+          swal.fire({
+            position: 'top-end',
+            icon: 'success',
+            title: `Se ha guardado con éxito el empleado ${this.empleado.nombre}`,
+            showConfirmButton: false,
+            timer: 3000
+          })
+        })
+    
+        /* Si el departamento tiene  funciones, se llama al servicio que guarda dichas funciones */
+        if(funcionesDespartamento !== undefined){
+          this.departamentosServices.guardarFuncionesDepartamento(funcionesDespartamento).subscribe(response =>{});
+        }
+      }
+    })
   }
   
   /* Metodo que regresa hacia atras */
