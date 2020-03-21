@@ -50,10 +50,10 @@ DROP TABLE IF EXISTS `empleados`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `empleados` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `nombre` varchar(45) DEFAULT NULL,
-  `apellidos` varchar(45) DEFAULT NULL,
+  `nombre` text,
+  `apellidos` text,
   `documento` bigint(20) DEFAULT '0',
-  `correo` varchar(45) DEFAULT NULL,
+  `correo` text,
   `telefono` bigint(20) DEFAULT '0',
   `activo` int(11) DEFAULT '0',
   `salario` double DEFAULT '0',
@@ -80,9 +80,9 @@ DROP TABLE IF EXISTS `funciones`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `funciones` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `nombre` varchar(45) DEFAULT NULL,
-  `descripcion` varchar(45) DEFAULT NULL,
-  `id_departamento` varchar(45) DEFAULT '0',
+  `nombre` text,
+  `descripcion` text,
+  `id_departamento` int(11) DEFAULT '0',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -105,4 +105,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2020-03-20 21:12:40
+-- Dump completed on 2020-03-20 21:54:03
