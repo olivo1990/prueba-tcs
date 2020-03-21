@@ -20,7 +20,7 @@ export class CrearEmpleadoComponent implements OnInit {
   actualizarEmpleado: Empleado;
   /* Se inicializa el atributo que se encarga de alamcenar la lista de departamentos */
   departamentos: Departamento[];
-  idEmpleado: number = 0;
+  idEmpleado: number;
   verFunciones: boolean;
 
   constructor(private location: Location, private empleadosService: EmpleadosService, private departamentosServices: DepartamentosService, private router: Router) { 
@@ -28,6 +28,8 @@ export class CrearEmpleadoComponent implements OnInit {
   }
 
   ngOnInit() {
+     this.idEmpleado = 0;
+
     /* Se llama el objeto que almacena de manera temporal los datos del empleado para actualizarlos */
     this.actualizarEmpleado = this.empleadosService.actualizarEmpleado;
     

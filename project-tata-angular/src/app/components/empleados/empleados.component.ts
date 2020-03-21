@@ -67,15 +67,20 @@ export class EmpleadosComponent implements OnInit {
       this.empleadosService.listaEmpleados().subscribe(response =>{
         this.isLoading = true;
         
-        /* Se aplica los filtros seleccionados en la lsta de empleados */
-        this.empleadosBuscados = this.aplicarFiltros(nroDocumento, salario, response);
+        if(response.length > 0){
 
-        if(this.empleadosBuscados.length > 0){
-          this.isLoading = false;
+          /* Se aplica los filtros seleccionados en la lsta de empleados */
+          this.empleadosBuscados = this.aplicarFiltros(nroDocumento, salario, response);
+            
+          if(this.empleadosBuscados.length > 0){
+            this.isLoading = false;
+          }
+  
+          this.dataSource = new MatTableDataSource<Empleado>(this.empleadosBuscados);
+          this.dataSource.sort = this.sort;
+        }else{
+          this.empleadosBuscados = response;
         }
-
-        this.dataSource = new MatTableDataSource<Empleado>(this.empleadosBuscados);
-        this.dataSource.sort = this.sort;
    
       });
   }
